@@ -5,7 +5,7 @@ import com.example.layeredarchitecture.model.OrderDTO;
 
 import java.sql.*;
 
-public class OrderDaoImpl {
+public class OrderDaoImpl implements OrderDAO{
     public String generateId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();

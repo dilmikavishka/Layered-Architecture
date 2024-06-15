@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class orderDetailImpl {
+public class orderDetailImpl implements orderDatailDAO{
     public int Save(List<OrderDetailDTO> orderDetails, String orderId) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
