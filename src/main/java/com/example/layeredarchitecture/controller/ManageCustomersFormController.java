@@ -1,8 +1,9 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.BO.CustomerBOImpl;
-import com.example.layeredarchitecture.DAO.Custome.Impl.customerDaoImpl;
-import com.example.layeredarchitecture.model.CustomerDTO;
+import com.example.layeredarchitecture.BO.BOFactory;
+import com.example.layeredarchitecture.BO.Costome.CustomerBO;
+import com.example.layeredarchitecture.BO.Impl.CustomerBOImpl;
+import com.example.layeredarchitecture.DTO.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
@@ -37,7 +38,10 @@ public class ManageCustomersFormController {
     public TextField txtCustomerAddress;
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
-    CustomerBOImpl customerBO = new CustomerBOImpl();
+
+    //customerBoImpl type eken gaththe naththe ehema dirrect access kara tighcoupling wena nisa
+    //CustomerBO customerBO = new CustomerBOImpl();
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.CUSTOMER);
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -158,7 +162,7 @@ public class ManageCustomersFormController {
 //                pstm.setString(3, address);
 //                pstm.executeUpdate();
 
-                customerBO.save(new CustomerDTO(id,name,address));
+                customerBO.saveCustomer(new CustomerDTO(id,name,address));
 
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));
 
@@ -185,7 +189,7 @@ public class ManageCustomersFormController {
 //                pstm.executeUpdate();
 
 
-                customerBO.update(new CustomerDTO(id,name,address));
+                customerBO.updateCustomer(new CustomerDTO(id,name,address));
 
 
             } catch (SQLException e) {
@@ -210,7 +214,7 @@ public class ManageCustomersFormController {
 //        pstm.setString(1, id);
 //        return pstm.executeQuery().next();
 
-        boolean isExist = customerBO.exist(id);
+        boolean isExist = customerBO.existCustomer(id);
 
         return isExist;
     }
@@ -230,7 +234,7 @@ public class ManageCustomersFormController {
 //            pstm.setString(1, id);
 //            pstm.executeUpdate();
 
-            customerBO.delete(id);
+            customerBO.deleteCustomer(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();
@@ -248,7 +252,7 @@ public class ManageCustomersFormController {
 //            Connection connection = DBConnection.getDbConnection().getConnection();
 //            ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");
 
-            String id = customerBO.generateId();
+            String id = customerBO.generateIdCustomer();
 
             if (id != null) {
                 int newCustomerId = Integer.parseInt(id.replace("C00-", "")) + 1;

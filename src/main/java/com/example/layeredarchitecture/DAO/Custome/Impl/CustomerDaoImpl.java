@@ -1,31 +1,31 @@
 package com.example.layeredarchitecture.DAO.Custome.Impl;
 
-import com.example.layeredarchitecture.DAO.Custome.customerDao;
+import com.example.layeredarchitecture.DAO.Custome.CustomerDao;
 import com.example.layeredarchitecture.DAO.SQLUtil;
-import com.example.layeredarchitecture.model.CustomerDTO;
+import com.example.layeredarchitecture.entity.Customer;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class customerDaoImpl implements customerDao {
-    public ArrayList<CustomerDTO> getAll() throws SQLException, ClassNotFoundException {
+public class CustomerDaoImpl implements CustomerDao {
+    public ArrayList<Customer> getAll() throws SQLException, ClassNotFoundException {
         /*Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();*/
         ResultSet rst = SQLUtil.execute("SELECT * FROM Customer");
 
-        ArrayList<CustomerDTO> allCustomers = new ArrayList<>();
+        ArrayList<Customer> allCustomers = new ArrayList<>();
         while (rst.next()){
-            CustomerDTO customerDTO = new CustomerDTO(
+            Customer customer = new Customer(
                             rst.getString("id"),
                             rst.getString("name"),
                             rst.getString("address"));
-            allCustomers.add(customerDTO);
+            allCustomers.add(customer);
         }
 
         return allCustomers;
     }
 
-    public boolean save(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
+    public boolean save(Customer entity) throws SQLException, ClassNotFoundException {
       /*  Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
         pstm.setString(1, customerDTO.getId());
@@ -33,12 +33,12 @@ public class customerDaoImpl implements customerDao {
         pstm.setString(3, customerDTO.getAddress());
         return pstm.executeUpdate() > 0;*/
 
-        return SQLUtil.execute("INSERT INTO Customer (id,name, address) VALUES (?,?,?)",customerDTO.getId(),customerDTO.getName(),customerDTO.getAddress());
+        return SQLUtil.execute("INSERT INTO Customer (id,name, address) VALUES (?,?,?)",entity.getId(),entity.getName(),entity.getAddress());
 
 
     }
 
-    public boolean update(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
+    public boolean update(Customer entity) throws SQLException, ClassNotFoundException {
      /*   Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
         pstm.setString(1, customerDTO.getName());
@@ -46,7 +46,7 @@ public class customerDaoImpl implements customerDao {
         pstm.setString(3, customerDTO.getId());
        return pstm.executeUpdate()>0;*/
 
-        return SQLUtil.execute("UPDATE Customer SET name=?, address=? WHERE id=?",customerDTO.getName(),customerDTO.getAddress(),customerDTO.getId());
+        return SQLUtil.execute("UPDATE Customer SET name=?, address=? WHERE id=?",entity.getName(),entity.getAddress(),entity.getId());
 
     }
 
@@ -83,7 +83,7 @@ public class customerDaoImpl implements customerDao {
     }
 
 
-    public CustomerDTO search (String newValue) throws SQLException, ClassNotFoundException {
+    public Customer search (String newValue) throws SQLException, ClassNotFoundException {
       /*  Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Customer WHERE id=?");
         pstm.setString(1, newValue + "");
@@ -95,8 +95,8 @@ public class customerDaoImpl implements customerDao {
             String name = rst.getString("name");
             String address = rst.getString("address");
 
-            CustomerDTO customerDTO = new CustomerDTO(newValue + "" ,name,address);
-            return customerDTO;
+            Customer customer = new Customer(newValue + "" ,name,address);
+            return customer;
         }
         return null;
     }

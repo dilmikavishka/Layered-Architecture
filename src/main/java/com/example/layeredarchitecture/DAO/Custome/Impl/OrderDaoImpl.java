@@ -2,7 +2,7 @@ package com.example.layeredarchitecture.DAO.Custome.Impl;
 
 import com.example.layeredarchitecture.DAO.Custome.OrderDAO;
 import com.example.layeredarchitecture.DAO.SQLUtil;
-import com.example.layeredarchitecture.model.OrderDTO;
+import com.example.layeredarchitecture.entity.Order;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class OrderDaoImpl implements OrderDAO {
     }
 
     @Override
-    public OrderDTO search(String newValue) throws SQLException, ClassNotFoundException {
+    public Order search(String newValue) throws SQLException, ClassNotFoundException {
         return null;
     }
 
@@ -41,11 +41,11 @@ public class OrderDaoImpl implements OrderDAO {
     }
 
     @Override
-    public ArrayList<OrderDTO> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Order> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
-    public boolean save(OrderDTO orderDTO) throws SQLException, ClassNotFoundException {
+    public boolean save(Order entity) throws SQLException, ClassNotFoundException {
      /*   Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement  stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
         stm.setString(1, orderDTO.getOrderId());
@@ -53,12 +53,12 @@ public class OrderDaoImpl implements OrderDAO {
         stm.setString(3, orderDTO.getCustomerId());
         return stm.executeUpdate()>0;*/
 
-        return SQLUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",orderDTO.getOrderId(),orderDTO.getOrderDate(),orderDTO.getCustomerId());
+        return SQLUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",entity.getOrderId(),entity.getOrderDate(),entity.getCustomerId());
 
     }
 
     @Override
-    public boolean update(OrderDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Order entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 }
